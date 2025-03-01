@@ -1,63 +1,27 @@
-import { PrismaClient } from "@prisma/client";
-import express, { NextFunction, Request, Response } from "express";
+import errorHandler from "#middleware/errorHandler.js";
+import { PostsRouter } from "#routers/posts.router.js";
+import { UserRouter } from "#routers/users.router.js";
+import express, { Request, Response } from "express";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const prisma = new PrismaClient();
-
-// routes
-app.get("/", (req, res) => {
-  throw new Error();
+// -------
+app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript + Express!");
 });
 
-app.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany({
-    where: {
-      name: {
-        contains: "Jorge",
-      },
-    },
-  });
-
-  console.log(users);
-
-  res.send({ data: users });
+app.get("/simulate-error", (req: Request, res: Response) => {
+  throw new Error("something went wrong");
 });
+// -------
 
-app.post("/users", async (req, res) => {
-  try {
-    await prisma.user.create({
-      data: {
-        cpf: "192381928312",
-        email: "jorgefrota@gmail.com",
-        name: "Jorge Frota",
-        phone: "12312893",
-      },
-    });
-    res.send({ message: "ok" });
-  } catch (err) {
-    if (err instanceof Error) {
-      res.send({ message: err.message });
-    } else {
-      res.send({ message: "An unknown error occurred" });
-    }
-  }
-});
+app.use("/users", UserRouter);
+app.use("/posts", PostsRouter);
 
-app.post("/posts");
+app.use(errorHandler);
 
-// error handling
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (res.headersSent) {
-    next(err);
-    return;
-  }
-  console.log(err.stack);
-  res.status(500).send({ status: 500, message: "Internal server error." });
-});
-
+// ------ start app
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
