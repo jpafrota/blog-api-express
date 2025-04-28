@@ -12,7 +12,7 @@ It is meant as a personal project to cover the following topics that I wanted to
 - [ ] repositories
 - [ ] unit testing / TDD
 
-Technologies used:
+## Technologies used:
 
 - TypeScript
 - Express.js
@@ -22,3 +22,17 @@ Technologies used:
 - Prisma ORM
 - PostgreSQL
 - Yarn
+
+### Starting the database
+
+`docker compose up -d`
+
+### Run migrations locally
+
+`yarn prisma migrate dev`
+
+This will already generate the Prisma client.
+
+### Generating Prisma client
+
+`yarn prisma generate`
