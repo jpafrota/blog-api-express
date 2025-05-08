@@ -1,6 +1,5 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
-import perfectionist from "eslint-plugin-perfectionist";
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -17,12 +16,10 @@ export default tseslint.config(
       },
     },
   },
-  perfectionist.configs["recommended-natural"],
   {
     rules: {
       "@typescript-eslint/restrict-template-expressions": "off",
       "@typescript-eslint/no-unused-vars": "off",
-      "perfectionist/sort-objects": "off",
     },
   },
 );
