@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES5",
+    "module": "CommonJS",
     "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "#/*": ["src/*"]
     },
-    "outDir": "./dist",
+    "outDir": "dist",
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
