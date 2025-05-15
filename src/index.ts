@@ -17,7 +17,6 @@ app.use("/posts", postsRoutes);
 
 app.use(errorHandler);
 
-// ------ start app
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

@@ -3,6 +3,7 @@ import validateBody from "#/middleware/validateBody";
 import prisma from "#/database/connection";
 import { CreateUserDTO, CreateUserSchema } from "#/modules/users/users.dto";
 import UserAlreadyExistsException from "#/errors/UserAlreadyExists";
+import bcrypt from "bcrypt";
 
 const router = Router();
 
@@ -26,9 +27,15 @@ router.post(
 
       if (userExists) throw new UserAlreadyExistsException();
 
+      const encryptedPassword = bcrypt.hashSync(data.password, 10);
+
       const user = await prisma.user.create({
-        data,
+        data: {
+          ...data,
+          password: encryptedPassword,
+        },
       });
+
       res.send({ data: { user } });
     } catch (err) {
       next(err);

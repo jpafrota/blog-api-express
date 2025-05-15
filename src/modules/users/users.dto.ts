@@ -7,7 +7,7 @@ export const CreateUserSchema = z.object({
   phone: z
     .string()
     .regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid E.164 phone number" }),
-  password: z.string().min(8).optional(),
+  password: z.string().min(8),
   cpf: z.string().refine(
     (userCpf) => {
       return cpf.isValid(userCpf);
