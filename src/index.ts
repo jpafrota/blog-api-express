@@ -1,11 +1,15 @@
 import express from "express";
+import bodyParser from "body-parser";
+
 import errorHandler from "#/middleware/errorHandler";
 import mainRoutes from "#/routes/main.routes";
-import postsRoutes from "#/routes/posts.routes";
-import usersRoutes from "#/routes/users.routes";
+import postsRoutes from "#/modules/posts/posts.routes";
+import usersRoutes from "#/modules/users/users.routes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
 
 app.use("/", mainRoutes);
 app.use("/users", usersRoutes);
