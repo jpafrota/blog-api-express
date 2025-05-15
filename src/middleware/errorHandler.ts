@@ -1,7 +1,7 @@
-import CustomError from "#/errors/CustomError";
+import { CustomException } from "#/errors/CustomException";
 import { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 
-// error handling middleware
 export default function errorHandler(
   error: Error,
   req: Request,
@@ -13,12 +13,25 @@ export default function errorHandler(
     return;
   }
 
-  if (error instanceof CustomError) {
+  if (error instanceof CustomException) {
     res.status(error.httpStatusCode).send({
       error: {
         status: error.httpStatusCode,
         message: error.message,
       },
+    });
+    return;
+  }
+
+  if (error instanceof ZodError) {
+    const issues = error.errors.map((e) => ({
+      path: e.path.join("."),
+      message: e.message,
+    }));
+
+    res.status(400).json({
+      error: "Validation failed",
+      details: issues,
     });
     return;
   }

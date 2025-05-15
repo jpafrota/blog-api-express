@@ -1,4 +1,4 @@
-export default class CustomError extends Error {
+export abstract class CustomException extends Error {
   httpStatusCode: number;
 
   constructor({
