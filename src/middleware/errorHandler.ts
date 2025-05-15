@@ -1,4 +1,4 @@
-import CustomException from "#exceptions/CustomException.js";
+import CustomError from "#/errors/CustomError";
 import { NextFunction, Request, Response } from "express";
 
 // error handling middleware
@@ -13,7 +13,7 @@ export default function errorHandler(
     return;
   }
 
-  if (error instanceof CustomException) {
+  if (error instanceof CustomError) {
     res.status(error.httpStatusCode).send({
       error: {
         status: error.httpStatusCode,

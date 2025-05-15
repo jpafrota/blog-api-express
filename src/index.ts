@@ -1,23 +1,15 @@
-import errorHandler from "#middleware/errorHandler.js";
-import { PostsRouter } from "#routers/posts.router.js";
-import { UserRouter } from "#routers/users.router.js";
-import express, { Request, Response } from "express";
+import express from "express";
+import errorHandler from "#/middleware/errorHandler";
+import mainRoutes from "#/routes/main.routes";
+import postsRoutes from "#/routes/posts.routes";
+import usersRoutes from "#/routes/users.routes";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// -------
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript + Express!");
-});
-
-app.get("/simulate-error", (req: Request, res: Response) => {
-  throw new Error("something went wrong");
-});
-// -------
-
-app.use("/users", UserRouter);
-app.use("/posts", PostsRouter);
+app.use("/", mainRoutes);
+app.use("/users", usersRoutes);
+app.use("/posts", postsRoutes);
 
 app.use(errorHandler);
 

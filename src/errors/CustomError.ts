@@ -1,4 +1,4 @@
-export default class CustomException extends Error {
+export default class CustomError extends Error {
   httpStatusCode: number;
 
   constructor({
@@ -9,7 +9,7 @@ export default class CustomException extends Error {
     message: string;
   }) {
     super();
-    this.message = message;
+    this.message = message; // inherited from `Error`
     this.httpStatusCode = httpStatusCode;
   }
 }
