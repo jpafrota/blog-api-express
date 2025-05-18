@@ -1,4 +1,4 @@
-import { CustomException } from "#/errors/CustomException";
+import { CustomException } from "#/errors/custom.exception";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
@@ -38,7 +38,7 @@ export default function errorHandler(
 
   console.log(error.stack);
   res.status(500).send({
-    error: { status: 500, message: getErrorMessage(error) },
+    error: { status: 500, message: "Internal Server Error" },
   });
 }
 

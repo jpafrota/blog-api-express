@@ -1,4 +1,4 @@
-import RequestBodyRequiredException from "#/errors/RequestBodyRequiredException";
+import RequestBodyRequiredException from "#/errors/request-body-required.exception";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 
