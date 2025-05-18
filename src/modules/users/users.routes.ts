@@ -73,9 +73,8 @@ router.patch(
     const updatedUser = await prisma.user.update({
       where: { id },
       data,
-      select: {
-        id: true,
-        ...Object.fromEntries(Object.keys(data).map((key) => [key, true])),
+      omit: {
+        password: true,
       },
     });
 
