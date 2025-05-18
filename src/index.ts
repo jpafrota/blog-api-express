@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-import errorHandler from "#/middleware/errorHandler";
+import errorHandler from "#/middleware/error-handler";
 import mainRoutes from "#/routes/main.routes";
 import postsRoutes from "#/modules/posts/posts.routes";
 import usersRoutes from "#/modules/users/users.routes";

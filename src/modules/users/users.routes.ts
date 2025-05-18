@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response, Router } from "express";
-import validateBody from "#/middleware/validateBody";
+import validateBody from "#/middleware/validate-body";
 import prisma from "#/database/connection";
-import { CreateUserDTO, CreateUserSchema } from "#/modules/users/users.dto";
-import UserAlreadyExistsException from "#/errors/UserAlreadyExists";
+import {
+  CreateUserDTO,
+  CreateUserSchema,
+} from "#/modules/users/dtos/create-user.dto";
+import UserAlreadyExistsException from "#/errors/user-already-exists.exception";
 import bcrypt from "bcrypt";
+import { UpdateUserDTO, UpdateUserSchema } from "./dtos/update-user.dto";
 
 const router = Router();
 
@@ -36,7 +40,7 @@ router.post(
         },
       });
 
-      res.send({ data: { user } });
+      res.send({ data: { userId: user.id } });
     } catch (err) {
       next(err);
     }
@@ -44,12 +48,74 @@ router.post(
 );
 
 // find all users
-router.get("/", (req, res) => {});
+router.get("/", async (req, res) => {
+  const users = await prisma.user.findMany({
+    select: {
+      name: true,
+      id: true,
+    },
+  });
+
+  res.send({ data: users });
+});
+
+router.patch(
+  "/:id",
+  validateBody(UpdateUserSchema),
+  async (
+    req: Request<{ id: string }, unknown, UpdateUserDTO>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data,
+      select: {
+        id: true,
+        ...Object.fromEntries(Object.keys(data).map((key) => [key, true])),
+      },
+    });
+
+    res.send({ message: "User updated successfully", data: updatedUser });
+  },
+);
 
 // find user by id
-router.get("/:id", (req, res, next) => {});
+router.get("/:id", async (req, res, next) => {
+  const id = req.params.id;
 
-// update user's pwd
-router.patch("/update-password", (req, res, next) => {});
+  const user = await prisma.user.findFirst({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+
+  res.send({ data: user });
+});
+
+router.delete("/:id", async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    res.send({
+      message: "User deleted successfully.",
+      data: {
+        userId: id,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default router;
