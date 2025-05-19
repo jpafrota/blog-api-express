@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:latest
     container_name: my_postgres
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -14,8 +14,8 @@ services:
       - "5432:5432"
 
   adminer:
+    restart: unless-stopped
     image: adminer
-    restart: always
     ports:
       - 8081:8080
 
