@@ -23,6 +23,18 @@ It is meant as a personal project to cover the following topics that I wanted to
 - PostgreSQL
 - Yarn
 
+### Installing node and yarn
+
+This repo uses `asdf`. Learn more about this amazing tool here: https://asdf-vm.com/
+
+After setting up your environment with asdf and nodejs, run:
+
+`corepack enable`
+`asdf reshim nodejs`
+`yarn`
+
+Done! You've setup Node.js and Yarn.
+
 ### Starting the database
 
 `docker compose up -d`
